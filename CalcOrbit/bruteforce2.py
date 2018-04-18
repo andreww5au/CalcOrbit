@@ -8,7 +8,6 @@
    what you're using it for, and any nifty improvements you've made.
 """
 
-from numpy import *
 import numpy
 
 GOTNUMEXPR = False
@@ -36,7 +35,7 @@ AU = 1.49597870700e11
 
 
 #data type used for floating point arrays
-dtp = dtype('float64')
+dtp = numpy.dtype('float64')
 
 
 #Lists used to store bodies added to the simulation. The data in these lists is used by the 'Init'
@@ -73,8 +72,8 @@ def AddHeavyBody(name='', body=None, pos=None, vel=None, M=None, r=None):
        r -    The capture radius of the body, in metres, used for collision detection
   """
   hnamelist.append(name)
-  hposlist.append(array(pos))
-  hplist.append(array(vel)*M)
+  hposlist.append(numpy.array(pos))
+  hplist.append(numpy.array(vel)*M)
   hmlist.append(M)
   hrlist.append(r)
   i = len(hnamelist)-1
@@ -97,8 +96,8 @@ def AddLightBody(name='', body=None, pos=None, vel=None, M=None, r=None):
        r -    ignored
   """
   lnamelist.append(name)
-  lposlist.append(array(pos))
-  lplist.append(array(vel))
+  lposlist.append(numpy.array(pos))
+  lplist.append(numpy.array(vel))
   i = len(lnamelist)-1
   lbodies[i] = body
   return i
@@ -175,34 +174,34 @@ def Init(sun=0):
   
   #Heavy bodies
   Nheavy = len(hposlist)           #Number of 'heavy' bodies
-  hpos = array(hposlist,dtp)       #Nheavy*3 array of heavy body positions, in AU
-  hp = array(hplist,dtp)           #Nheavy*3 array of heavy body momenta, in kg*AU/day
-  hm = array(hmlist,dtp)           #Nheavy*1 array of  masses, in kg
+  hpos = numpy.array(hposlist,dtp)       #Nheavy*3 array of heavy body positions, in AU
+  hp = numpy.array(hplist,dtp)           #Nheavy*3 array of heavy body momenta, in kg*AU/day
+  hm = numpy.array(hmlist,dtp)           #Nheavy*1 array of  masses, in kg
   hm.shape = (Nheavy,1)            #Reshape to (1 by Nheavy) vs. (Nheavy by 1)
-  hradius2 = array(hrlist)/AU      
+  hradius2 = numpy.array(hrlist)/AU
   hradius2 *= hradius2             #Nheavy*1 array of capture radii squared, in (AU^2)
-  hradius2 = hradius2[:, newaxis]  #Add an extra axis, so we don't need to do this during processing
+  hradius2 = hradius2[:, numpy.newaxis]  #Add an extra axis, so we don't need to do this during processing
 
   #Light bodies
   Nlight = len(lposlist)           #Number of 'light' bodies
-  lpos = array(lposlist,dtp)       #Nlight*3 array of light body positions, in AU
-  lp = array(lplist,dtp)           #Nlight*3 array of light body momenta, in kg*AU/day
-  lremaining = ones(Nlight,bool)   #Boolean array with 'True' indicating a light body that's
+  lpos = numpy.array(lposlist,dtp)       #Nlight*3 array of light body positions, in AU
+  lp = numpy.array(lplist,dtp)           #Nlight*3 array of light body momenta, in kg*AU/day
+  lremaining = numpy.ones(Nlight,bool)   #Boolean array with 'True' indicating a light body that's
                                    #  still in the simulation
 
   #Constant arrays, created here to save time during processing
-  hid = arange(Nheavy)
-  hdumn = ones(Nheavy,dtp)
+  hid = numpy.arange(Nheavy)
+  hdumn = numpy.ones(Nheavy,dtp)
 
   #Make the total system momentum sum to zero
-  hp[sun] = zeros(3,dtp)
+  hp[sun] = numpy.zeros(3,dtp)
   memtot = sum(hp,0)
   hp[sun] = -memtot 
 
   #Calculate G*M1*M2 for every heavy-heavy and heavy-light pair of bodies, using the 
   #units of AU for distance, and days for time, instead of metres and seconds
-  hmassprod = G*hm*hm[:,newaxis]*86400*86400/(AU*AU*AU)
-  lmassprod = G*hm[:,newaxis]*86400*86400/(AU*AU*AU)
+  hmassprod = G*hm*hm[:,numpy.newaxis]*86400*86400/(AU*AU*AU)
+  lmassprod = G*hm[:,numpy.newaxis]*86400*86400/(AU*AU*AU)
 
 
 
@@ -223,13 +222,13 @@ def Process(t, steps=1, dt=1.0, numcores=None):      #Euler-Cromer method
   for j in range(steps):
 
     #First handle the motion of the 'Heavy' bodies
-    r = hpos-hpos[:,newaxis]    #all pairs of heavy-heavy position vectors
-    rmag3 = add.reduce(r*r,-1)  #square of scalar distances between heavy objects
-    rmag3 *= sqrt(rmag3)        #Scalar distances cubed
+    r = hpos-hpos[:,numpy.newaxis]    #all pairs of heavy-heavy position vectors
+    rmag3 = numpy.add.reduce(r*r,-1)  #square of scalar distances between heavy objects
+    rmag3 *= numpy.sqrt(rmag3)        #Scalar distances cubed
     rmag3[hid,hid] = hdumn      #Set all self-self distances to 1, not 0, to avoid zero division
                                 #  When multiplied by position vectors, self-self vectors will be
                                 #  zero, so self-self forces will also be zero
-    F = hmassprod*r/rmag3[:,:,newaxis]     # all heavy-heavy force vector pairs
+    F = hmassprod*r/rmag3[:,:,numpy.newaxis]     # all heavy-heavy force vector pairs
 
     hp += sum(F,1)*dt           #For each heavy object, sum the forces from all the other heavy objects
                                 #  and add it to that objects current momentum
@@ -238,29 +237,29 @@ def Process(t, steps=1, dt=1.0, numcores=None):      #Euler-Cromer method
     if Nlight:
       #Now handle the motion of the 'Light' bodies
       if not GOTNUMEXPR:
-        r = hpos[:, newaxis] - lpos  # all pairs of heavy-light position vectors
-        rmag3 = add.reduce(r*r,-1)  #square of scalar distances
+        r = hpos[:, numpy.newaxis] - lpos  # all pairs of heavy-light position vectors
+        rmag3 = numpy.add.reduce(r*r,-1)  #square of scalar distances
 
         #While we have the squares of the heavy-light scaler distances, detect any collisions
-        colliding = logical_and(rmag3 < hradius2, lremaining).nonzero()
+        colliding = numpy.logical_and(rmag3 < hradius2, lremaining).nonzero()
         if len(colliding[0]):
           for ip,imp in zip(colliding[0],colliding[1]):
             CollideLight(t, ip, imp)
 
-        rmag3 *= sqrt(rmag3)        #rmag3 is now the heavy-light scalar distances cubed
-        F = lmassprod*r/rmag3[:,:,newaxis]     #all heavy-light force vector pairs
+        rmag3 *= numpy.sqrt(rmag3)        #rmag3 is now the heavy-light scalar distances cubed
+        F = lmassprod*r/rmag3[:,:,numpy.newaxis]     #all heavy-light force vector pairs
 
         lp += sum(F,0)*dt           #For each light object, sum the forces from all the heavy objects
                                   #  and add it to that objects current momentum
         lpos += lp*dt               #position = position + momentum*dt (assume mass is 1.0)
       else:
-        r = hpos[:, newaxis]
+        r = hpos[:, numpy.newaxis]
         rmag3 = numexpr.evaluate('sum((r-lpos)**2, axis=2)')
         colliding = numexpr.evaluate('(rmag3 < hradius2) & lremaining').nonzero()
         if len(colliding[0]):
           for ip,imp in zip(colliding[0],colliding[1]):
             CollideLight(t, ip, imp)
-        rmag3 = numexpr.evaluate('rmag3**1.5')[:, :, newaxis]
+        rmag3 = numexpr.evaluate('rmag3**1.5')[:, :, numpy.newaxis]
         Fa = numexpr.evaluate('sum(lmassprod*r/rmag3, axis=0)')
         lp = numexpr.evaluate('lp + Fa*dt')
         lpos = numexpr.evaluate('lpos + lp*dt')
@@ -268,7 +267,7 @@ def Process(t, steps=1, dt=1.0, numcores=None):      #Euler-Cromer method
 
   if Nlight:
     # Use the new position vectors to detect any light bodies that have left the modelling volume
-    escaped = logical_and(logical_or.reduce(abs(lpos)>EscapeDistance,-1), lremaining).nonzero()
+    escaped = numpy.logical_and(numpy.logical_or.reduce(abs(lpos)>EscapeDistance,-1), lremaining).nonzero()
     if len(escaped[0]):
       for imp in escaped[0]:
         EscapeLight(t, imp)

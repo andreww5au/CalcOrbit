@@ -42,16 +42,18 @@ capmult = 5         #Multiply the physical body radius by this amount to get the
 
 PlanetsToModel = ['Sun', 'Earth', 'Mars', 'Jupiter']
 
+# PlanetsToModel = ['Sun', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+
 ################ Configure the properties of the 'Asteroids' (massless test particles) ############
 
-Nasteroids = 10    #Number of random asteroids
+Nasteroids = 100    #Number of random asteroids
 
 RandomA = False     #If false, the semi-major axes for all asteroids are evenly distributed, instead of random
 rpos = None        #Start angle for orbital position, in degrees ('None' for random positions)
 
-amin, amax = 5.0, 5.1   #bounds for semi-major axis distribution
+amin, amax = 2.5, 3.5   #bounds for semi-major axis distribution
 emin, emax = 0.0, 0.0  #Bounds for eccentricity variation (zero for circular orbits)
-Imin, Imax = 0, 0   #Bounds for inclination angle variation, in degrees (zero for orbits in the plane of the ecliptic)
+Imin, Imax = -0.0, 0.0   #Bounds for inclination angle variation, in degrees (zero for orbits in the plane of the ecliptic)
 
 
 
