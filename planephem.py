@@ -8,7 +8,7 @@ G = 6.67259e-11
 
 
 """
-   Ephemeris library, written by Dr Andrew Williams <andrew@physics.uwa.edu.au>.
+   Ephemeris library, written by Dr Andrew Williams <andrew@longtable.org>.
    
    Released under the GPL, feel free to use it for non-commercial purposes. I'd appreciate an email with
    what you're using it for, and any nifty improvements you've made.
