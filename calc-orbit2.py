@@ -69,12 +69,12 @@ class Body(planephem.Planet):
         planephem.Planet.__init__(self, *args, **keywords)
         self.color = vpython.color.white
         self.dradius = 1.0
-        self.material = None
+        self.texture = None
         self.rings = False
         self.up = (0, 0, 1)
         self.body = None
 
-    def setbody(self, color=None, dradius=None, material=None, rings=None, simple=False, up=None):
+    def setbody(self, color=None, dradius=None, rings=None, simple=False, up=None, texture=None):
         """Define the sphere representing the object itself. The radius is given in units of
            'dispmult', a global parameter allowing human-friendly sizes. Store initial
            position, mass, and momentum from the ephemeris library.
@@ -89,10 +89,10 @@ class Body(planephem.Planet):
             dradius = self.dradius
         else:
             self.dradius = dradius
-        if material is None:
-            material = self.material
+        if texture is None:
+            texture = self.texture
         else:
-            self.material = material
+            self.texture = texture
         if rings is None:
             rings = self.rings
         else:
@@ -109,7 +109,7 @@ class Body(planephem.Planet):
                                      axis=v(0, 1, 0),             # (0, 1, 2)
                                      length=0.1 * dispmult,
                                      color=color,
-                                     material=material,
+                                     texture=texture,
                                      up=v(*up))
             if simple:
                 planet = vpython.simple_sphere(pos=v(0, 0, 0),
@@ -120,35 +120,23 @@ class Body(planephem.Planet):
                 planet = vpython.sphere(pos=v(0, 0, 0),
                                         radius=dradius * dispmult,
                                         color=color,
-                                        material=material,
+                                        texture=texture,
                                         up=v(*up))
             self.body = vpython.compound([rings, planet])
             self.body.pos = v(*self.pos)
             self.body.axis = v(0, 1, 2)
-            # self.body.radius = dradius * dispmult
-            # self.body.color = color
         else:
             if simple:
                 self.body = vpython.simple_sphere(pos=v(*self.pos),
                                                   radius=dradius * dispmult,
                                                   color=color,
                                                   up=v(*up))
-                #                                   make_trail=False,
-                #                                   trail_type="points",
-                #                                   interval=10,
-                #                                   retain=3650)
-
             else:
                 self.body = vpython.sphere(pos=v(*self.pos),
                                            radius=dradius * dispmult,
                                            color=color,
-                                           material=material,
+                                           texture=texture,
                                            up=v(*up))
-                #                            make_trail=False,
-                #                            trail_type="points",
-                #                            interval=10,
-                #                            retain=3650)
-            # self.body.trail_object.size = 2
         self.body.cradius = self.rad * capmult
         self.body.mass = self.M
 
@@ -191,7 +179,6 @@ def ProcessKeys(event):
     global paused, Tracking, scenecenter, TrackAngle, TrackMag, scene, tlabel, Trail
     try:  # Key pressed:
         k = event.key
-        print(k, repr(k), type(k), ord(k))
         if (k == '0') and 'Sun' in PlanetsToModel:  # Keys 0-9 keep the view centered on Sun-Pluto respectively
             scenecenter = bodies['Sun']
         elif (k == '1') and 'Mercury' in PlanetsToModel:
@@ -293,7 +280,7 @@ for name in PlanetsToModel:
     elif name == 'Mars':
         planets[name].setbody(color=v(1.0, 0.2, 0.2), dradius=1)
     elif name == 'Jupiter':
-        planets[name].setbody(color=vpython.color.orange, dradius=3)  # , texture={'file':'jupsurf.tga', 'mapping':'spherical'})
+        planets[name].setbody(color=vpython.color.orange, dradius=3, texture={'file':'jupsurf.png', 'mapping':'spherical'})
     elif name == 'Saturn':
         planets[name].setbody(color=vpython.color.orange, dradius=1, rings=True)
     elif name == 'Uranus':
