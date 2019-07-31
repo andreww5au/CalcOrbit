@@ -70,7 +70,7 @@ def AddHeavyBody(name='', body=None, pos=None, vel=None, M=None, r=None):
     return i
 
 
-def AddLightBody(name='', body=None, pos=None, vel=None, M=None, r=None):
+def AddLightBody(name='', body=None, pos=None, vel=None):
     """Add an object to the Nbody simulation, but modelled as a massless particle.
 
        Arguments are:
@@ -81,8 +81,6 @@ def AddLightBody(name='', body=None, pos=None, vel=None, M=None, r=None):
                 from the running simulation
          pos -  The initial position of the object (NOT taken from the 'body.pos' value)
          vel -  The velocity vector (in AU/day)
-         M -    ignored
-         r -    ignored
     """
     lnamelist.append(name)
     lposlist.append(numpy.array(pos))
@@ -194,7 +192,7 @@ def Init(sun=0):
 
 
 ###################################### Main simulation ######################################
-def Process(t, steps=1, dt=1.0, numcores=None):  # Euler-Cromer method
+def Process(t, steps=1, dt=1.0):  # Euler-Cromer method
     """Calculate 'steps' iterations in the Nbody simulation, starting at time 't' with a time
        delta of 'dt' (in days) between each step.
        If any light bodies approach to within the capture radius of any heavy bodies, call

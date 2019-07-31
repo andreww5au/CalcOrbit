@@ -332,7 +332,7 @@ for mp in asteroids.values():
 
 # Add asteroids to the nbody simulation engine as light bodies (modelled as massless particles)
 for name, obj in asteroids.items():
-    obj.i = nbody.AddLightBody(name=name, body=obj.body, pos=obj.pos, vel=obj.vel, M=obj.M, r=obj.rad * capmult)
+    obj.i = nbody.AddLightBody(name=name, body=obj.body, pos=obj.pos, vel=obj.vel)
 
 # create one dict called 'bodies' containing all objects - planets and asteroids
 bodies = planets
@@ -363,7 +363,7 @@ Planets = ['Sun', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Ura
 ################## Optionally precalculate model for some time before starting display ################
 i = PreCalc * 365.25 / (dt * Substeps)
 while i > 0:
-    nbody.Process(t, steps=Substeps, dt=dt, numcores=1)
+    nbody.Process(t, steps=Substeps, dt=dt)
     if i % 1000 == 0:
         print("Steps remaining: %d" % i)
     t += dt * Substeps
@@ -382,7 +382,7 @@ def mainloop():
         # print(timingstring)
 
     # Use the Nbody engine to run the model for 'Substeps' steps, each of time 'dt'
-    nbody.Process(t, steps=Substeps, dt=dt, numcores=1)
+    nbody.Process(t, steps=Substeps, dt=dt)
     t = t + dt * Substeps
     tlabel.text = "Year=%6.4f (%d JD). Timing: %s" % ((t - 2451545.0) / 365.246 + 2000.0, t, timingstring)
 

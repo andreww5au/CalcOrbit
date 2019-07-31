@@ -11,7 +11,8 @@ G = 6.67259e-11
    Ephemeris library, written by Dr Andrew Williams <andrew@longtable.org>.
    
    Released under the GPL, feel free to use it for non-commercial purposes. I'd appreciate an email with
-   what you're using it for, and any nifty improvements you've made.
+   what you're using it for, and any nifty improvements you've made. Of course, I'd strongly recommend using
+   Skyfield (https://rhodesmill.org/skyfield/) or AstroPy (https://www.astropy.org/) instead.
 
    Calculate ephemeris data from the JPL planet ephemeris and from standard elliptical orbital elements for
    other objects. 
@@ -207,7 +208,7 @@ class Planet(object):
 
     xp = a*(cosd(E)-e)
     yp = a*sqrt(1-e*e)*sind(E)
-    zp = 0.0
+    # zp = 0.0
 
     xecl = (cosd(w)*cosd(omg)-sind(w)*sind(omg)*cosd(I))*xp + (-sind(w)*cosd(omg)-cosd(w)*sind(omg)*cosd(I))*yp
     yecl = (cosd(w)*sind(omg)+sind(w)*cosd(omg)*cosd(I))*xp + (-sind(w)*sind(omg)+cosd(w)*cosd(omg)*cosd(I))*yp
