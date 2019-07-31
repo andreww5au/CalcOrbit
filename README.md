@@ -17,29 +17,33 @@ This N-body model is just a toy, as far as real N-body simulations are concerned
 optimised, and in a low level language, not Python. This model is designed to teach the concepts, and keep the 
 model visible, in real time.
 
-The calc-orbit.py program recognises the following keys:
+The calc-orbit.py program recognises the following key presses:
 
 0-9: Changes the viewpoint centre to either the Sun (0) or Mercury-Pluto (1-9), and follow that object, if 
-it's moving. With some models, if many asteroids are ejected from the solar system to large distances, the 
-low-level autoscaling/autoview parameters can get corrupted, resulting in all of the objects disappearing. 
-Using the '0' key to recenter on the Sun also redoes the autoscaling, and will probably fix this, although 
-you will probably need to zoom in a lot on the central solar system.
+it's moving. 
 
-T: Toggle 'tracking mode', which automatically rotates the camera to keep the viewing angle constant when 
+t: Toggle 'tracking mode', which automatically rotates the camera to keep the viewing angle constant when 
 following a moving planet.
 
-U: Toggle the 'up' direction used to manage camera rotation in 'tracking mode' when following a moving planet.
+u: Toggle the 'up' direction used to manage camera rotation in 'tracking mode' when following a moving planet.
 
-P: Toggle the trail of dots left behind each moving object - handy for spotting small objects
+p: Pause the animation, or resume if it's already paused.
 
-C: Clear the display of any dot-trails previously displayed
+c: Clear the current dot-trail.
 
-E: Display a set of arrows showing calculation error vectors - the difference between the true (ephemeris) 
+e: Display a set of arrows showing calculation error vectors - the difference between the true (ephemeris) 
 position of a planet on that date, and the calculated position in the N-body simulation.
 
-UP/DOWN arrows: Make the displayed size of the planets and asteroids larger or smaller, respectively. The 
+b/s: Make the displayed size of the planets and asteroids bigger or smaller, respectively. The 
 displayed sizes are purely for display purposes, and are unrelated to the real physical sizes, which are 
-only used to calculate they capture radius for collisions.
+only used to calculate they capture radius for collisions. NOTE - only the planet sizes
+are changed - I think it's because vpython simple_sphere() objects can't have their radius
+changed on the fly. 
+
+Mouseclick: Click on an object to make it start leaving a trail. Click on empty space
+to turn off the trail. It's easier to click on an object if you pause the animation 
+(press 'p') first, click, then unpause (press 'p' again).
+
 
 Changing the model parameters:
 All parameters are defined in the code itself, in calc-orbit2.py. Configurable lines of code include:
