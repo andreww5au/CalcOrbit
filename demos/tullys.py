@@ -6,6 +6,8 @@ win = 1000
 lab = None
 
 print("""
+Visualise the galaxies in the Tully Nearby Galaxy Catalog.
+
 Right button drag to rotate view.
 Left button drag up or down to move in or out.
 
