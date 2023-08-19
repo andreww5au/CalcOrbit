@@ -30,20 +30,20 @@ Substeps = 10  # Number of calculated position updates between each display upda
 PreCalc = 0  # Number of years to pre-calculate before starting visual display
 PrInterval = 10  # Number of days between displaying timing info
 
-dispmult = 0.1  # The radius of each sphere displayed is this constant
+dispmult = 0.05  # The radius of each sphere displayed is this constant
 #    multiplied by the display radius in the object parameters
 capmult = 5  # Multiply the physical body radius by this amount to get the capture radius
 
-# PlanetsToModel = ['Sun', 'Earth', 'Mars', 'Jupiter']
+PlanetsToModel = ['Sun', 'Mercury', 'Earth', 'Mars', 'Jupiter']
 
-PlanetsToModel = ['Sun', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+# PlanetsToModel = ['Sun', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 
 ################ Configure the properties of the 'Asteroids' (massless test particles) ############
 
 Nasteroids = 1000  # Number of random asteroids
 
 RandomA = False  # If false, the semi-major axes for all asteroids are evenly distributed, instead of random
-rpos = 120  # Start angle for orbital position, in degrees ('None' for random positions)
+rpos = 130  # Start angle for orbital position, in degrees ('None' for random positions)
 
 amin, amax = 3.0, 4.5  # bounds for semi-major axis distribution
 emin, emax = 0.0, 0.00  # Bounds for eccentricity variation (zero for circular orbits)
