@@ -84,5 +84,8 @@ strong visible evidence of minor perturbations due to planets.
 CAVEATS:
 This code was written a long time ago - if I was writing it now, I'd just use skyfield (https://rhodesmill.org/skyfield/) 
 or AstroPy (https://www.astropy.org/) to calculate the initial solar system positions instead of writing code to use the
-JPL ephemeris. The code was initially written using 'classic' VPython (version 6 or lower), so some of the features
-may not work well (or at all) using VPython 7.
+JPL ephemeris. 
+
+This code uses VPython 7 (https://vpython.org/), which can be tricky to install,
+and might not be available on some platforms and/or recent Python versions.
+When run, it opens a web browser tab to display the output.

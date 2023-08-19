@@ -43,9 +43,9 @@ PlanetsToModel = ['Sun', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn
 Nasteroids = 1000  # Number of random asteroids
 
 RandomA = False  # If false, the semi-major axes for all asteroids are evenly distributed, instead of random
-rpos = 12  # Start angle for orbital position, in degrees ('None' for random positions)
+rpos = 120  # Start angle for orbital position, in degrees ('None' for random positions)
 
-amin, amax = 3.0, 5.5  # bounds for semi-major axis distribution
+amin, amax = 3.0, 4.5  # bounds for semi-major axis distribution
 emin, emax = 0.0, 0.00  # Bounds for eccentricity variation (zero for circular orbits)
 Imin, Imax = -0.0, 0.0  # Bounds for inclination angle variation, in degrees (zero for orbits in the plane of the ecliptic)
 
@@ -386,7 +386,9 @@ def mainloop():
             scene.camera.pos = scenecenter.body.pos - scene.camera.axis
 
 
-while 1:
-    vpython.rate(50)
-    if not paused:
-        mainloop()
+if __name__ == '__main__':
+    time.sleep(5)
+    while 1:
+        vpython.rate(50)
+        if not paused:
+            mainloop()
